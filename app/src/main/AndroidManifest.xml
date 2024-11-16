@@ -19,7 +19,7 @@
             android:name=".login_otp"
             android:exported="false" />
         <activity
-            android:name=".loginphonenumber"
+            android:name=".LoginPhoneNumberActivity"
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
