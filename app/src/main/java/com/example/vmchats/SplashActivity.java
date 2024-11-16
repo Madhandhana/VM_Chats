@@ -20,9 +20,10 @@ public class SplashActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             // After the splash screen, launch the main activity
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashActivity.this, loginphonenumber.class);
             startActivity(intent);
             finish(); // Close the splash activity so the user can't navigate back to it
         }).start();
+
     }
 }
