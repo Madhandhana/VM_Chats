@@ -24,6 +24,8 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -61,7 +63,6 @@ public class login_otp extends AppCompatActivity {
             String enteredOtp = otpinput.getText().toString();
            PhoneAuthCredential credential=  PhoneAuthProvider.getCredential(verificationcode, enteredOtp);
             signin(credential);
-            setInProgress(true);
 
         });
         resendOtpTextView.setOnClickListener(v->{
@@ -90,7 +91,7 @@ public class login_otp extends AppCompatActivity {
 
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
-                        AndroidUtil.showToast(getApplicationContext(),"Otp verfication Failed");
+                        AndroidUtil.showToast(getApplicationContext(),e.toString());
                         setInProgress(false);
                     }
                     @Override
@@ -133,13 +134,9 @@ public class login_otp extends AppCompatActivity {
                     Intent intent = new Intent(login_otp.this, Username.class);
                     intent.putExtra("phone", phoneNumber);
                     startActivity(intent);
-
-
-
                 }else{
                     AndroidUtil.showToast(getApplicationContext(),"Login Failed");
                 }
-                setInProgress(false);
             }
         });
     }
