@@ -1,9 +1,13 @@
 package com.example.vmchats.utils;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.content.Context;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.vmchats.model.UserModel;
 
 public class AndroidUtil
@@ -25,5 +29,9 @@ public class AndroidUtil
         userModel.setPhone(intent.getStringExtra("phone"));
         userModel.setUserId(intent.getStringExtra("userId"));
         return userModel;
+    }
+
+    public static void setProfilePic(Context context, Uri imageuri, ImageView imageView){
+        Glide.with(context).load(imageuri).apply(new RequestOptions().circleCropTransform()).into(imageView);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.vmchats;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -93,7 +94,7 @@ public class SearchUserActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(adapter != null) {
-            adapter.startListening();
+            adapter.notifyDataSetChanged();
         }
     }
 }
