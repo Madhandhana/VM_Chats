@@ -45,4 +45,5 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.cpp)
+    implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
 }
