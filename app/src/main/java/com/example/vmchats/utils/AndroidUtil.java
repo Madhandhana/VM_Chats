@@ -14,9 +14,10 @@ public class AndroidUtil
     }
 
     public static void passUserModelAsIntent(Intent intent , UserModel userModel){
-        intent.putExtra("userId",userModel.getUserId());
+
         intent.putExtra("username",userModel.getUsername());
         intent.putExtra("phone",userModel.getPhone());
+        intent.putExtra("userId",userModel.getUserId());
     }
     public static UserModel getUserModelFromIntent(Intent intent){
         UserModel userModel= new UserModel();
