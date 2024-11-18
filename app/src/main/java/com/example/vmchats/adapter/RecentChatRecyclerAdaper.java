@@ -39,10 +39,12 @@ public class RecentChatRecyclerAdaper extends FirestoreRecyclerAdapter<ChatroomM
                         boolean lastmessageSentByMe = model.getLastMessageSenderId().equals(FirebaseUtil.currentUserId());
                         UserModel otherUser = task.getResult().toObject(UserModel.class);
                         holder.usernameText.setText(otherUser.getUsername());
-                        if(lastmessageSentByMe)
-                            holder.lastMessageText.setText("You: "+model.getLastMessage());
-                        else
-                        holder.lastMessageText.setText(model.getLastMessage());
+                        if(lastmessageSentByMe) {
+                            holder.lastMessageText.setText("You: " + model.getLastMessage());
+                        }
+                        else {
+                            holder.lastMessageText.setText(model.getLastMessage());
+                        }
 
                         holder.lastMessageTime.setText(FirebaseUtil.timestampToSting(model.getLastMessageTimestamp()));
 
