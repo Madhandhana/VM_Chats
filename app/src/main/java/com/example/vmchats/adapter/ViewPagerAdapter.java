@@ -1,9 +1,10 @@
-package com.example.vmchats;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.vmchats.ChatFragment;
+import com.example.vmchats.ProfileFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
