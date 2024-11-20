@@ -1,6 +1,7 @@
 package com.example.vmchats.utils;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -33,5 +34,9 @@ public class AndroidUtil
 
     public static void setProfilePic(Context context, Uri imageuri, ImageView imageView){
         Glide.with(context).load(imageuri).apply(new RequestOptions().circleCropTransform()).into(imageView);
+    }
+
+    public static void setProfilePic(Context context, Bitmap bitmap, ImageView imageView) {
+        Glide.with(context).load(bitmap).apply(new RequestOptions().circleCropTransform()).into(imageView);
     }
 }

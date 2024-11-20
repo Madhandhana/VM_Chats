@@ -2,6 +2,8 @@ package com.example.vmchats;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -10,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +25,11 @@ import android.widget.TextView;
 import com.example.vmchats.model.UserModel;
 import com.example.vmchats.utils.AndroidUtil;
 import com.example.vmchats.utils.FirebaseUtil;
+import com.example.vmchats.utils.ImageUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -71,6 +78,35 @@ public class ProfileFragment extends Fragment {
         progressBar = view.findViewById(R.id.profile_progress_bar);
         logoutButton = view.findViewById(R.id.logout_btn);
 
+        imagePicLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null && data.getData() != null) {
+                            selectedImageUri = data.getData();
+                            Bitmap bitmap = null;
+                            try {
+                                InputStream inputStream = getContext().getContentResolver().openInputStream(selectedImageUri);
+                                if (inputStream != null) {
+                                    bitmap = BitmapFactory.decodeStream(inputStream);
+                                    inputStream.close();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            if (bitmap != null) {
+                                // Store and update the profile picture
+                                String base64Image = ImageUtil.bitmapToBase64(bitmap);
+                                currentUserModel.setProfilePictureBase64(base64Image);
+                                ImageUtil.storeImageInFirestore(FirebaseUtil.currentUserId(), bitmap);
+                                AndroidUtil.setProfilePic(getContext(), selectedImageUri, profilePic);
+                            }
+                        }
+                    }
+                });
+
+
         getUserData();
         updateProfileButton.setOnClickListener(v -> {
             updateBtnClick();
@@ -100,26 +136,29 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    void updateBtnClick(){
-        String newusername = userNameInput.getText().toString();
-        if(newusername.isEmpty() || newusername.length()<3){
+    void updateBtnClick() {
+        String newUsername = userNameInput.getText().toString();
+        if (newUsername.isEmpty() || newUsername.length() < 3) {
             userNameInput.setError("Username is required");
             return;
         }
-        currentUserModel.setUsername(newusername);
+        currentUserModel.setUsername(newUsername);
+
+        // Ensure profilePictureBase64 is retained
+        if (currentUserModel.getProfilePictureBase64() == null || currentUserModel.getProfilePictureBase64().isEmpty()) {
+            currentUserModel.setProfilePictureBase64(""); // Set a default value if needed
+        }
+
         setInProgress(true);
         updateToFirestore();
     }
-
-    void updateToFirestore(){
-
+    void updateToFirestore() {
         FirebaseUtil.currentUserDetails().set(currentUserModel).addOnCompleteListener(task -> {
             setInProgress(false);
-            if(task.isSuccessful()){
-                AndroidUtil.showToast(getContext(),"Profile Updated");
-            }
-            else{
-                AndroidUtil.showToast(getContext(),"Failed to update profile");
+            if (task.isSuccessful()) {
+                AndroidUtil.showToast(getContext(), "Profile Updated");
+            } else {
+                AndroidUtil.showToast(getContext(), "Failed to update profile");
             }
         });
     }
@@ -132,7 +171,10 @@ public class ProfileFragment extends Fragment {
                 currentUserModel = task.getResult().toObject(UserModel.class);
                 userNameInput.setText(currentUserModel.getUsername());
                 phoneInput.setText(currentUserModel.getPhone());
-
+            if (currentUserModel.getProfilePictureBase64() != null) {
+                Bitmap bitmap = ImageUtil.base64ToBitmap(currentUserModel.getProfilePictureBase64());
+                AndroidUtil.setProfilePic(getContext(), bitmap, profilePic);
+            }
         });
     }
 

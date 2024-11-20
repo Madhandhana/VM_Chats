@@ -1,3 +1,5 @@
+package com.example.vmchats.adapter;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;

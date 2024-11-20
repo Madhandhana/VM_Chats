@@ -5,15 +5,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
-import com.example.vmchats.adapter.ViewPagerAdapter;
 
+import com.example.vmchats.adapter.ViewPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -24,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton searchButton;
     ChatFragment chatFragment;
     ProfileFragment profileFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,18 +33,16 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
-        searchButton.setOnClickListener((v)->{
-    startActivity(new Intent(MainActivity.this, SearchUserActivity.class));
+        searchButton.setOnClickListener((v) -> {
+            startActivity(new Intent(MainActivity.this, SearchUserActivity.class));
         });
-
-
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.menu_chat){
+                if (item.getItemId() == R.id.menu_chat) {
                     viewPager.setCurrentItem(0);
-                } else if(item.getItemId() == R.id.menu_profile){
+                } else if (item.getItemId() == R.id.menu_profile) {
                     viewPager.setCurrentItem(1);
                 }
                 return true;
@@ -69,6 +64,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         bottomNavigationView.setSelectedItemId(R.id.menu_chat);
-
     }
 }
