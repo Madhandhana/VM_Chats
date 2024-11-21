@@ -1,11 +1,13 @@
 package com.example.vmchats.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.example.vmchats.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
@@ -17,7 +19,7 @@ public class ImageUtil {
     // Convert Bitmap to Base64 string
     public static String bitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
@@ -44,7 +46,7 @@ public class ImageUtil {
     }
 
     // Retrieve Base64 string from Firestore and convert to Bitmap
-    public static void retrieveImageFromFirestore(String userId, ImageView imageView) {
+    public static void retrieveImageFromFirestore(String userId, ImageView imageView, Context context) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(userId)
                 .get()
@@ -53,7 +55,13 @@ public class ImageUtil {
                         String base64Image = task.getResult().getString("profilePictureBase64");
                         if (base64Image != null) {
                             Bitmap bitmap = base64ToBitmap(base64Image);
-                            imageView.setImageBitmap(bitmap);
+                            Log.d(TAG, "Image retreived successfully "+base64Image.length());
+                            if (bitmap != null) {
+                                AndroidUtil.setProfilePic(context, bitmap, imageView);
+                            } else {
+                                imageView.setImageResource(R.drawable.user); // Use a default drawable
+                            }
+
                         }
                     } else {
                         Log.e(TAG, "Failed to retrieve image", task.getException());

@@ -16,6 +16,7 @@ import com.example.vmchats.R;
 import com.example.vmchats.model.UserModel;
 import com.example.vmchats.utils.AndroidUtil;
 import com.example.vmchats.utils.FirebaseUtil;
+import com.example.vmchats.utils.ImageUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
@@ -31,7 +32,7 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<UserMode
     protected void onBindViewHolder(@NonNull UserModelViewHolder holder, int position, @NonNull UserModel model) {
         holder.usernameText.setText(model.getUsername());
         holder.phoneText.setText(model.getPhone());
-
+        ImageUtil.retrieveImageFromFirestore(model.getUserId(),holder.profilePic,context);
         if(model.getUserId().equals(FirebaseUtil.currentUserId())){
             holder.usernameText.setText(model.getUsername()+" (You)");
 

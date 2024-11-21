@@ -17,6 +17,7 @@ import com.example.vmchats.model.ChatroomModel;
 import com.example.vmchats.model.UserModel;
 import com.example.vmchats.utils.AndroidUtil;
 import com.example.vmchats.utils.FirebaseUtil;
+import com.example.vmchats.utils.ImageUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,8 +39,11 @@ public class RecentChatRecyclerAdaper extends FirestoreRecyclerAdapter<ChatroomM
                     if(task.isSuccessful()){
                         boolean lastmessageSentByMe = model.getLastMessageSenderId() != null && model.getLastMessageSenderId().equals(FirebaseUtil.currentUserId());
                         UserModel otherUser = task.getResult().toObject(UserModel.class);
+                        ImageUtil.retrieveImageFromFirestore(otherUser.getUserId(), holder.profilePic, context);
+
                         if (otherUser != null) {
                         holder.usernameText.setText(otherUser.getUsername());
+
                         }
                         if(lastmessageSentByMe) {
                             holder.lastMessageText.setText("You: " + model.getLastMessage());

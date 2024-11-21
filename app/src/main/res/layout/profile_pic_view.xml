@@ -11,8 +11,7 @@
         android:src="@drawable/user"
         android:layout_centerInParent="true"
         android:background="@drawable/circular_bg"
-        android:padding="4dp"
-        app:tint="@color/light_grey"
+
         android:backgroundTint="@color/off_white"
         />
 

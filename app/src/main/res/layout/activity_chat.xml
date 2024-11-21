@@ -54,6 +54,7 @@
         android:layout_above="@id/bottom_layout"
         android:layout_below="@id/toolbar"
         android:id="@+id/chat_recycler_view"
+        android:fontFamily="@font/roboto"
         />
 
     <RelativeLayout

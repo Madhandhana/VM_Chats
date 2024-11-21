@@ -54,16 +54,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        imagePicLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if(result.getResultCode() == Activity.RESULT_OK){
-                        Intent data = result.getData();
-                        if(data != null && data.getData()!=null){
-                            selectedImageUri = data.getData();
-                            AndroidUtil.setProfilePic(getContext(),selectedImageUri,profilePic);
-                    }
-                }
-    });
     }
 
     @Override
@@ -129,8 +119,6 @@ public class ProfileFragment extends Fragment {
                             imagePicLauncher.launch(intent);
                             return null;
                         }
-
-
                     });
         });
         return view;

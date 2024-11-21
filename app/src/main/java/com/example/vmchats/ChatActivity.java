@@ -1,9 +1,12 @@
 package com.example.vmchats;
 
+
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +25,7 @@ import com.example.vmchats.model.ChatroomModel;
 import com.example.vmchats.model.UserModel;
 import com.example.vmchats.utils.AndroidUtil;
 import com.example.vmchats.utils.FirebaseUtil;
+import com.example.vmchats.utils.ImageUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,6 +49,7 @@ public class ChatActivity extends AppCompatActivity {
     TextView otherUsername;
 
     RecyclerView recyclerView;
+    ImageView profilePicImageView;
 
 
     @Override
@@ -59,6 +64,7 @@ public class ChatActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.back_button); // This is now a TextView
         otherUsername = findViewById(R.id.other_username);
         recyclerView = findViewById(R.id.chat_recycler_view);
+        profilePicImageView = findViewById(R.id.profile_pic_image_view);
 
         // Set the back button functionality
         backBtn.setOnClickListener(v -> {
@@ -67,6 +73,8 @@ public class ChatActivity extends AppCompatActivity {
 
         // Set the other username
         otherUsername.setText(otherUser.getUsername());
+
+        ImageUtil.retrieveImageFromFirestore(otherUser.getUserId(), profilePicImageView, ChatActivity.this);
 
         sendMessageBtn.setOnClickListener(v -> {
             String message = messageInput.getText().toString().trim();
