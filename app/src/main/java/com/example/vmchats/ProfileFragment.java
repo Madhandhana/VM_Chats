@@ -48,7 +48,7 @@ public class ProfileFragment extends Fragment {
     ActivityResultLauncher<Intent> imagePicLauncher;
     Uri selectedImageUri;
     public ProfileFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         profilePic = view.findViewById(R.id.profile_image_view);
         phoneInput = view.findViewById(R.id.profile_phone);
@@ -89,7 +89,7 @@ public class ProfileFragment extends Fragment {
                                 // Store and update the profile picture
                                 String base64Image = ImageUtil.bitmapToBase64(bitmap);
                                 currentUserModel.setProfilePictureBase64(base64Image);
-                                ImageUtil.storeImageInFirestore(FirebaseUtil.currentUserId(), bitmap);
+                                ImageUtil.storeImageInFirestore(FirebaseUtil.currentUserId(), bitmap, getContext());
                                 AndroidUtil.setProfilePic(getContext(), selectedImageUri, profilePic);
                             }
                         }
@@ -132,9 +132,9 @@ public class ProfileFragment extends Fragment {
         }
         currentUserModel.setUsername(newUsername);
 
-        // Ensure profilePictureBase64 is retained
+
         if (currentUserModel.getProfilePictureBase64() == null || currentUserModel.getProfilePictureBase64().isEmpty()) {
-            currentUserModel.setProfilePictureBase64(""); // Set a default value if needed
+            currentUserModel.setProfilePictureBase64("");
         }
 
         setInProgress(true);

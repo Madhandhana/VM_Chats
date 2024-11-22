@@ -9,5 +9,7 @@
     <color name="red">#C3C3C3</color>
     <color name="off_white">#FAFAFA</color>
     <color name="chat_color_sender">#23DBE6</color>
+    <color name="selected_message_background">#FFEB3B</color>
     <color name="chat_color_receiver">#53E45D</color>
 </resources>
+

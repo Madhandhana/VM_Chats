@@ -9,7 +9,7 @@ public class UserModel {
     private Timestamp createdTimestamp;
 
     private String userId;
-    private String profilePictureBase64=""; // Add this field
+    private String profilePictureBase64="";
 
     public UserModel() {
     }
@@ -18,7 +18,7 @@ public class UserModel {
         this.username = username;
         this.createdTimestamp = createdTimestamp;
         this.userId = userId;
-        this.profilePictureBase64 = ""; // Default value for profile picture
+        this.profilePictureBase64 = "";
     }
 
     public UserModel(String phone, String username, Timestamp createdTimestamp, String userId, String profilePictureBase64) {
@@ -61,7 +61,7 @@ public class UserModel {
         this.userId = userId;
     }
 
-    // Getters and setters for all fields including profilePictureBase64
+
     public String getProfilePictureBase64() {
         return profilePictureBase64;
     }

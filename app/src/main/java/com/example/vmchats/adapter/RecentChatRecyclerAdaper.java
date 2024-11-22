@@ -58,7 +58,6 @@ public class RecentChatRecyclerAdaper extends FirestoreRecyclerAdapter<ChatroomM
                             AndroidUtil.passUserModelAsIntent(intent,otherUser);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent);
-
                         });
                     }
                 });

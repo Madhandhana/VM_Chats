@@ -1,7 +1,12 @@
 package com.example.vmchats;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -19,6 +24,8 @@ public class activity_login extends AppCompatActivity {
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
+
+    private Switch biometricEnableSwitch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +34,8 @@ public class activity_login extends AppCompatActivity {
 
         executor = ContextCompat.getMainExecutor(this);
 
-        // Initialize the biometric prompt
+
+
         biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
@@ -35,39 +43,46 @@ public class activity_login extends AppCompatActivity {
 
             }
 
+
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                proceedToMainActivity(); // Proceed to main activity on success
+                proceedToMainActivity();
             }
 
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
-                retryAuthentication(); // Retry on authentication failure
+                retryAuthentication();
             }
         });
 
-        // Set up the prompt info
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle("Authenticate to use VM Chats")
                 .setSubtitle("Authenticate using your biometric credential")
                 .setDeviceCredentialAllowed(true)
                 .build();
 
-        // Trigger the biometric prompt immediately when the app opens
         biometricPrompt.authenticate(promptInfo);
-    }
 
+
+    Button unlockButton = findViewById(R.id.unlock_button);
+    unlockButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            biometricPrompt.authenticate(promptInfo);
+    }
+    });
+
+}
     private void retryAuthentication() {
         biometricPrompt.authenticate(promptInfo);
     }
 
     private void proceedToMainActivity() {
-        // Navigate to the MainActivity
         Intent intent = new Intent(this, SplashActivity.class);
         startActivity(intent);
-        finish(); // Close the current activity
+        finish();
     }
 
     }

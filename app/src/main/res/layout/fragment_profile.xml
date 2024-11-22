@@ -75,4 +75,12 @@ android:gravity="center_vertical">
         android:id="@+id/logout_btn"
         android:text="Logout"/>
 
+    <Switch
+        android:id="@+id/biometric_enable_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Biometric"
+        android:textColor="@color/my_primary"
+        android:layout_marginTop="20dp"/>
+
 </LinearLayout>

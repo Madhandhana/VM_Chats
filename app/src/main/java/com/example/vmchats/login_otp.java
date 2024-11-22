@@ -73,8 +73,7 @@ public class login_otp extends AppCompatActivity {
     }
 
     void sendOtp(String phoneNumber , boolean isResend) {
-        // Send OTP to the phone number
-        // You can use Firebase Auth or any other service to send OTP
+
         startResendTimer();
         setInProgress(true);
         PhoneAuthOptions.Builder builder =

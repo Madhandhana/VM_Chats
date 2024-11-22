@@ -2,24 +2,20 @@ package com.example.vmchats;
 
 
 
-import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vmchats.adapter.ChatRecyclerAdapter;
-import com.example.vmchats.adapter.SearchUserRecyclerAdapter;
+import com.example.vmchats.database.AppDatabase;
 import com.example.vmchats.model.ChatMessageModel;
 import com.example.vmchats.model.ChatroomModel;
 import com.example.vmchats.model.UserModel;
@@ -32,8 +28,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Query;
-
-import org.w3c.dom.Text;
 
 import java.util.Arrays;
 
@@ -52,6 +46,7 @@ public class ChatActivity extends AppCompatActivity {
     ImageView profilePicImageView;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,17 +56,15 @@ public class ChatActivity extends AppCompatActivity {
         chatroomId = FirebaseUtil.getChatroomid(FirebaseUtil.currentUserId(),otherUser.getUserId());
         messageInput = findViewById(R.id.chat_message_input);
         sendMessageBtn = findViewById(R.id.message_send_btn);
-        backBtn = findViewById(R.id.back_button); // This is now a TextView
+        backBtn = findViewById(R.id.back_button);
         otherUsername = findViewById(R.id.other_username);
         recyclerView = findViewById(R.id.chat_recycler_view);
         profilePicImageView = findViewById(R.id.profile_pic_image_view);
 
-        // Set the back button functionality
         backBtn.setOnClickListener(v -> {
            onBackPressed();
         });
 
-        // Set the other username
         otherUsername.setText(otherUser.getUsername());
 
         ImageUtil.retrieveImageFromFirestore(otherUser.getUserId(), profilePicImageView, ChatActivity.this);
@@ -87,16 +80,14 @@ public class ChatActivity extends AppCompatActivity {
         getOrCreateChatroomModel();
         setupChatRecyclerView();
     }
-    
-    void setupChatRecyclerView(){
-        Query query = FirebaseUtil.getChatroomMessageReference(chatroomId)
-                .orderBy("timestamp", Query.Direction.DESCENDING);   
 
+    void setupChatRecyclerView() {
+        Query query = FirebaseUtil.getChatroomMessageReference(chatroomId)
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<ChatMessageModel> options = new FirestoreRecyclerOptions.Builder<ChatMessageModel>()
                 .setQuery(query, ChatMessageModel.class)
                 .build();
-
 
         ChatRecyclerAdapter adapter = new ChatRecyclerAdapter(options, getApplicationContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
